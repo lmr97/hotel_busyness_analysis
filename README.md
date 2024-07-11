@@ -21,14 +21,20 @@ Do not use this data for anything without my explicit permission.
 
 ## Feature selection
 
-Having had some experience in what makes a hotel busy at the front desk, I recorded all potential features that I thought could contribute to the target. To narrow them down further, I started with a full model, and minimized the AIC to find the best fitting model, which is as follows:
+Having had some experience in what makes a hotel busy at the front desk, I recorded all potential features that I thought could contribute to the target in the data file. To narrow them down further, I started with a full model, and minimized the AIC to find the best fitting model, which is as follows (this process runs in the R script):
 
 $$
-\text{busyness} = 
+\text{Service Events} = 10.14 + 1.13(\text{Arrivals}) + 0.04(\text{NCGR}) + 0.46 (\text{Occupancy})
 $$
+
+This model also resonnates with my work experience, as these things seem to contribute most to front desk traffic. 
 
 ## Model diagnostics
-The plots produced by the R script demonstrate that this model satisfies all the assumptions for linear regression: errors centered at zero, normality of errors, and homoskedacity. The last two are confirmed by a Shapiro-Wilk test and a Breusch-Pagan test respectively. 
+The plots produced by the R script demonstrate that this model satisfies all the assumptions for linear regression: errors centered at zero, normality of errors, and homoskedacity. The last two are confirmed by a Shapiro-Wilk test and a Breusch-Pagan test respectively. VIFs for included features had $VIF < 2$, meaning that these do not negatively impact the model. 
 
 ## Model results
-The adjusted $R^2$ value for the model is $R^2_\text{adj} = 0.662$, with a root-mean-squared error of $\text{RMSE}=11.032$.
+The adjusted $R^2$ value for the model is $R^2_\text{adj} = 0.663$, with a root-mean-squared error of $\text{RMSE}=11.3$.
+
+## Business relevacnce
+
+This analysis determines that three key factors explain over 66% of the variance in busyness at the front desk: arrivals, non-corporate group rooms, and occupancy. This has important implications for staffing: these are the data to look at when considering how many people to schedule at the front desk for a given shift. 
