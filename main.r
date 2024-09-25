@@ -70,21 +70,9 @@ plot(Arrivals ~ Occupancy)  # most significant, investigate VIF of each variable
 
 # investigate most correlated variables for VIF
 VIF(best.model)
-
-## old way. commented out, just in case
-# occ.model = lm(Occupancy ~ Arrivals + Departures + NCGR, data = events.data)
-# arr.model = lm(Arrivals ~ Occupancy + Departures + NCGR, data = events.data)
-# ncgr.model = lm(NCGR ~ Arrivals + Departures + Occupancy, data = events.data)
-# 
-# print("Occ% VIF: ")
-# 1/(1-summary(occ.model)$r.squared)
-# print("Arrivals VIF: ")
-# 1/(1-summary(arr.model)$r.squared)
-# print("NCGR VIF: ")
-# 1/(1-summary(ncgr.model)$r.squared)
-# 
-# bptest(best.model)
-# shapiro.test(best.model$residuals)
+ 
+bptest(best.model)
+shapiro.test(best.model$residuals)
 
 print("#####################################################################")
 
