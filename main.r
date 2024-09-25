@@ -3,7 +3,8 @@ library(ggplot2)
 library(ggfortify)
 library(MASS)
 library(lmtest)
-
+library(regclass)
+setwd("/home/martinr/Desktop/Personal_Coding/R/Service Event Prediction")
 
 events.data = read.csv("lag0service_events_data.csv")
 
@@ -26,7 +27,7 @@ events.data$Recording.Day.of.Week = recode(events.data$Recording.Day.of.Week,
 
 events.data$Date = as.Date(events.data$Date, format="%m/%d/%Y")
 
-# exlude extreme outliers
+# exclude extreme outliers
 events.data[c(12,17,30,41,57,84,165,177),1:4]
 events.data = events.data[-c(12,17,30,41,57,84,165,177),]
 attach(events.data)
@@ -65,24 +66,28 @@ plot(best.model)
 
 # check for multicollinearity
 cor(events.data[, 5:9]) # shows all correlations
-plot(Arrivals ~ Occupancy)  # most significant, investivate VIF of each variable
+plot(Arrivals ~ Occupancy)  # most significant, investigate VIF of each variable
 
 # investigate most correlated variables for VIF
-occ.model = lm(Occupancy ~ Arrivals + Departures + NCGR, data = events.data)
-arr.model = lm(Arrivals ~ Occupancy + Departures + NCGR, data = events.data)
-ncgr.model = lm(NCGR ~ Arrivals + Departures + Occupancy, data = events.data)
+VIF(best.model)
 
-print("Occ% VIF: ")
-1/(1-summary(occ.model)$r.squared)
-print("Arrivals VIF: ")
-1/(1-summary(arr.model)$r.squared)
-print("NCGR VIF: ")
-1/(1-summary(ncgr.model)$r.squared)
-
-bptest(best.model)
-shapiro.test(best.model$residuals)
+## old way. commented out, just in case
+# occ.model = lm(Occupancy ~ Arrivals + Departures + NCGR, data = events.data)
+# arr.model = lm(Arrivals ~ Occupancy + Departures + NCGR, data = events.data)
+# ncgr.model = lm(NCGR ~ Arrivals + Departures + Occupancy, data = events.data)
+# 
+# print("Occ% VIF: ")
+# 1/(1-summary(occ.model)$r.squared)
+# print("Arrivals VIF: ")
+# 1/(1-summary(arr.model)$r.squared)
+# print("NCGR VIF: ")
+# 1/(1-summary(ncgr.model)$r.squared)
+# 
+# bptest(best.model)
+# shapiro.test(best.model$residuals)
 
 print("#####################################################################")
+
 print("########################### Prediction ##############################")
 print("#####################################################################")
 
